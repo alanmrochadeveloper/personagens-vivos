@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - 13001:3001
+    volumes:
+      - ./api:/home/app/api
+    depends_on:
+      - postgres-db
+
+  client:
+    container_name: client
+    build: ./client
+    ports:
+     - 13000:3000
+    volumes:
+     - ./api:/home/app/client
+    depends_on:
+     - postgres-db
+
+  postgres-db:
+    container_name: postgres-db
+    image: postgres12
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=p123
+    ports:
+      -15432:5432
+    volumes:
+      - ./db:/home/app/db
